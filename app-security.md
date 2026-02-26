@@ -1,6 +1,6 @@
 ---
 name: VibeSec-Skill
-description: This skill helps Claude write secure web applications. Use this when working on any web application or when a user requests a scan or audit to ensure security best practices are followed.
+description: This skill helps AI write secure web applications. Use this when working on any web application or when a user requests a scan or audit to ensure security best practices are followed.
 ---
 
 # Secure Coding Guide for Web Applications
