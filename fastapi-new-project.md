@@ -100,11 +100,6 @@ class ExternalAPIError(AppBaseException):
 from fastapi import APIRouter
 
 router = APIRouter()
-
-
-@router.get("/health")
-def health_check():
-    return {"status": "ok"}
 ```
 
 ### `app/services/example_service.py`
@@ -134,6 +129,11 @@ app.include_router(router, prefix="/api/v1")
 @app.get("/")
 def root():
     return {"message": "API is running"}
+
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
 ```
 
 ### `.env`
@@ -180,7 +180,7 @@ uvicorn app.main:app --reload
 ## Endpoints
 
 - `GET /` — API status
-- `GET /api/v1/health` — Health check
+- `GET /health` — Health check
 - `GET /docs` — Swagger UI (development only)
 ```
 
@@ -194,7 +194,7 @@ After creating all files, confirm the following:
 - [ ] `requirements.txt` is populated from `pip freeze`
 - [ ] Running `uvicorn app.main:app --reload` starts the server without errors
 - [ ] `GET /` returns `{"message": "API is running"}`
-- [ ] `GET /api/v1/health` returns `{"status": "ok"}`
+- [ ] `GET /health` returns `{"status": "ok"}`
 - [ ] `GET /docs` loads the Swagger UI
 
 ---
