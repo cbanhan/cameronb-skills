@@ -1,0 +1,22 @@
+# My Claude Code Skills
+
+A collection of custom Claude Code skills for accelerating development workflows.
+
+---
+
+## Skills
+
+### `color-palette-preview`
+Generates a polished, self-contained HTML preview from a set of CSS variables or hex color values. Given a palette, it produces a swatch grid alongside a realistic mini UI mockup — cards, buttons, text, badges — styled in a modern SaaS aesthetic. The output is a single copy-pasteable HTML file with no external dependencies, making it easy to evaluate a color scheme in context before committing to it in a real project.
+
+### `fastapi-new-project`
+Scaffolds a complete FastAPI project from scratch in one shot. It creates the full folder structure (`app/`, `services/`, `core/`, `schemas/`, `sql/`), writes all boilerplate files with correct content (`main.py`, `config.py`, `exceptions.py`, `dependencies.py`, `routes.py`), sets up a virtual environment, installs dependencies, generates `requirements.txt`, and configures `.env`, `.env.example`, and `.gitignore`. The result is a production-ready starting point that follows the layered architecture defined in the FastAPI coding rules.
+
+### `fastapi.coding-rules` *(coding rules / context file)*
+Defines the architectural rules and checklists that govern every FastAPI file generated in a project. It enforces a strict layered pattern — thin routers (5–15 lines, one service call), business logic isolated in services, typed Pydantic schemas, all secrets via a `Settings` class, and custom exceptions that flow from services up to routers. It also covers SQL conventions (raw SQL or Supabase client, no ORMs), dependency pinning rules, a project split/scale guide, and an optional Firebase Auth override section.
+
+### `fast_api_security`
+Guides the generation of secure FastAPI endpoints by applying defense-in-depth across every common attack surface. It covers dependency-based auth with `Depends()`, IDOR prevention via ownership checks in SQL `WHERE` clauses, Pydantic mass-assignment blocking with `extra = "forbid"`, parameterized query enforcement, JWT algorithm whitelisting, file upload validation via magic bytes, SSRF and path traversal protection, open redirect prevention, security headers middleware, CORS configuration, rate limiting, safe error responses, and Argon2id password hashing. Both Railway/Postgres (raw SQL) and Supabase client patterns are supported throughout.
+
+### `HTML-to-Expo` (`html-to-expo-rn`)
+Converts HTML/CSS/Tailwind UI into production-ready Expo/React Native components. It detects the input scope (full screen, section, or element) and maps every web primitive to the correct RN equivalent — replacing `div` with `View`, `img` with `Image`, `onClick` with `onPress`, and so on. All styles are moved into `StyleSheet.create({})`, CSS properties unsupported in RN are translated or stubbed, icon references are replaced with placeholder comments, and the output is always a complete, self-contained component file ready to drop into an Expo project.
