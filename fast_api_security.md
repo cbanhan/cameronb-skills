@@ -9,16 +9,11 @@ description: This skill helps AI write secure FastAPI applications. Use this whe
 
 Approach every FastAPI endpoint from a **bug hunter's perspective**. Apply defense in depth — never rely on a single control.
 
-**Core Principles:**
+**Security Principles:**
 - Validate all input server-side (Pydantic is your first line, not your only line)
 - Fail closed: deny by default, grant explicitly
 - Least privilege: minimize DB user permissions, scope tokens tightly
 - Never trust client-supplied data, IDs, or roles
-- All DB calls live in the service layer — never in the router
-
-**DB patterns supported:**
-- **Railway/Postgres** — raw SQL via `asyncpg` or `psycopg2`. No ORMs, no SQLAlchemy.
-- **Supabase** — `.table()` chaining for simple CRUD, `.rpc()` for complex queries.
 
 ---
 
@@ -53,25 +48,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:
         raise credentials_exception
 ```
 
-### Router — Thin, One Service Call
-
-```python
-# api/v1/documents_routes.py
-@router.get("/documents/{document_id}", response_model=DocumentResponse)
-async def get_document(
-    document_id: uuid.UUID,
-    current_user: dict = Depends(get_current_user),
-):
-    try:
-        return await document_service.get_document(
-            document_id=document_id,
-            user_id=current_user["user_id"],
-        )
-    except ResourceNotFound:
-        raise HTTPException(status_code=404, detail="Document not found")
-```
-
-### Service — Ownership Verified at the Data Layer
+### Ownership Enforcement
 
 Return 404 for both missing and unauthorized resources — prevents enumeration.
 
@@ -219,7 +196,6 @@ async def list_documents(user_id: str, sort_by: str = "created_at", order: str =
     if order not in ALLOWED_SORT_ORDERS:
         raise ValueError("Invalid sort order")
 
-    # Safe to interpolate because both values came from whitelists
     async with get_db_connection() as conn:
         rows = await conn.fetch(
             f"SELECT id, title, created_at FROM documents WHERE owner_id = $1 ORDER BY {sort_by} {order}",
@@ -237,7 +213,7 @@ async def list_documents(user_id: str, sort_by: str = "created_at", order: str =
 
 ## JWT Security
 
-> **Firebase override:** If this project uses the Firebase Auth override from `fastapi.coding-rules.md`, this section is replaced by `firebase_admin.auth.verify_id_token()`. Skip JWT signing/verification below and follow the Firebase checklist instead.
+> **Firebase override:** If this project uses the Firebase Auth override from `fastapi-rules`, this section is replaced by `firebase_admin.auth.verify_id_token()`. Skip JWT signing/verification below and follow the Firebase checklist instead.
 
 | Vulnerability | Prevention |
 |---|---|
@@ -249,11 +225,6 @@ async def list_documents(user_id: str, sort_by: str = "created_at", order: str =
 
 ```python
 # services/auth_service.py
-from jose import JWTError, jwt
-from datetime import datetime, timedelta
-import uuid
-from core.config import settings
-
 def create_access_token(user_id: str) -> str:
     return jwt.encode(
         {
@@ -452,10 +423,6 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
     allow_headers=["Authorization", "Content-Type"],
 )
-
-# Disable Swagger in production
-if settings.environment == "production":
-    app = FastAPI(docs_url=None, redoc_url=None)
 ```
 
 ---
@@ -490,25 +457,9 @@ Apply strict limits on: login, token refresh, password reset, email/SMS verifica
 
 ## Error Handling
 
-Never expose internal errors or DB details to clients. All error handling follows the pattern in `fastapi.coding-rules.md` — services raise custom exceptions, routers convert them to `HTTPException`.
+Never expose internal errors, stack traces, or DB details to clients.
 
 ```python
-# core/exceptions.py
-class AppBaseException(Exception):
-    pass
-
-class ResourceNotFound(AppBaseException):
-    pass
-
-class Unauthorized(AppBaseException):
-    pass
-
-class ValidationError(AppBaseException):
-    pass
-
-class DatabaseError(AppBaseException):
-    pass
-
 # main.py — catch-all for unexpected errors
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
@@ -523,35 +474,19 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 ## Secrets Management
 
+Security-critical fields that must always be in `Settings`:
+
 ```python
-# core/config.py
-from pydantic import BaseSettings
-
-class Settings(BaseSettings):
-    environment: str
-    secret_key: str              # 256+ bit random hex — `secrets.token_hex(32)`
-    algorithm: str = "HS256"
-    access_token_expire_minutes: int = 15
-
-    # Railway Postgres
-    database_url: str | None = None
-
-    # Supabase (if used)
-    supabase_url: str | None = None
-    supabase_key: str | None = None
-
-    allowed_origins: list[str] = []
-    allowed_redirect_hosts: list[str] = []
-    upload_dir: str = "/tmp/uploads"
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-
-settings = Settings()
+secret_key: str          # 256+ bit random hex — generate with: secrets.token_hex(32)
+algorithm: str = "HS256" # Never derive from token header
+access_token_expire_minutes: int = 15
+allowed_origins: list[str] = []
+allowed_redirect_hosts: list[str] = []
+upload_dir: str = "/tmp/uploads"
 ```
 
-- Never use `os.environ.get()` anywhere — always `settings.*`
+Rules:
+- Never use `os.environ.get()` — always `settings.*`
 - Add every new secret to `.env.example` with a placeholder immediately
 - App must crash at startup if a required value is missing
 - `.env` is always in `.gitignore`
