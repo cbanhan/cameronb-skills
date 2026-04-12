@@ -35,3 +35,6 @@ Guides full React Native or HTML/CSS-to-SwiftUI conversions with a strict multi-
 
 ### `expo-router-navigation.rules`
 Defines a strict Expo Router navigation contract for tabs, inner pages, and modals so routes are placed correctly, do not appear unintentionally in bottom navigation, and avoid legacy React Navigation patterns.
+
+### `swift_dev_menu`
+Defines how to build a reusable SwiftUI developer menu that is debug-only (`#if DEBUG`), sectioned for safe tooling actions, wired through environment objects (without business logic in the view), and includes proper state handling for dialogs, sheets, persistent toggles, and preview setup.
