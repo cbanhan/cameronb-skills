@@ -33,8 +33,8 @@ Defines a strict Expo Router navigation contract for tabs, inner pages, and moda
 ### `swift_dev_menu`
 Defines how to build a reusable SwiftUI developer menu that is debug-only (`#if DEBUG`), sectioned for safe tooling actions, wired through environment objects (without business logic in the view), and includes proper state handling for dialogs, sheets, persistent toggles, and preview setup.
 
-### `claude_plan_review`
+### `plan-review`
 Performs a senior-engineer pre-development plan review before any code is written. It reads the plan in full, cross-references every assumption against the actual codebase, and produces a structured findings table categorized by severity (CRITICAL, MAJOR, MINOR). Flags missing prerequisites, wrong assumptions, already-completed work, ambiguous instructions, missing guards, regression risks, and silent failure modes. Outputs a READY or NEEDS UPDATES status with a clear list of what the plan gets right.
 
 ### `create-plan`
-Generates a detailed, codebase-grounded implementation plan before any code is written. It reads all relevant files, maps dependencies and sequencing, and produces a `plan.md` file with a clear goal, scope, prerequisites, step-by-step instructions (each naming exact file paths and changes), validation steps, and risk notes. Designed to pair with `claude_plan_review` — the plan is created first, then reviewed before implementation begins.
+Generates a detailed, codebase-grounded implementation plan before any code is written. It reads all relevant files, maps dependencies and sequencing, and produces a `plan.md` file with a clear goal, scope, prerequisites, step-by-step instructions (each naming exact file paths and changes), validation steps, and risk notes. Designed to pair with `plan-review` — the plan is created first, then reviewed before implementation begins.
