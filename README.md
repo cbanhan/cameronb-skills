@@ -24,9 +24,6 @@ Converts HTML/CSS/Tailwind UI into production-ready Expo/React Native components
 ### `swift_best_practices`
 Provides a strict SwiftUI architecture prompt guide covering folder structure, state management, navigation, services, theme usage, and code style. Designed to keep new features consistent, scalable, and maintainable.
 
-### `UXPilot_skill`
-Generates UXPilot-ready prompts for designing calm, modern, iOS-quality app flows and screens. It emphasizes hierarchy, primary/secondary actions, card-based grouping, and functional color roles, with clear output rules for single screens and multi-screen flows.
-
 ### `HTML_to_swift`
 Guides full React Native or HTML/CSS-to-SwiftUI conversions with a strict multi-phase process: source reading, migration mapping, project structure, assets, color tokens, CSS translation rules, navigation patterns, and component/state management mappings.
 
