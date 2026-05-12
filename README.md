@@ -15,8 +15,8 @@ Scaffolds a complete FastAPI project from scratch in one shot. It creates the fu
 ### `fastapi-rules`
 A single security-first ruleset for every FastAPI project. Combines architecture standards and security requirements into one file so safety is never an afterthought. Covers the full layered pattern (thin routers, service-layer logic, typed Pydantic schemas with `extra = "forbid"`, `Settings`-based config, custom exceptions), plus security built into each layer: ownership-enforced SQL `WHERE` clauses, parameterized queries, JWT algorithm whitelisting, SSRF and path traversal prevention, file upload magic-byte validation, security headers middleware, CORS configuration, rate limiting, and Argon2id password hashing. Includes a combined pre-commit checklist and a Firebase Auth override section.
 
-### `HTML-to-Expo` (`html-to-expo-rn`)
-Converts HTML/CSS/Tailwind UI into production-ready Expo/React Native components. It detects the input scope (full screen, section, or element) and maps every web primitive to the correct RN equivalent — replacing `div` with `View`, `img` with `Image`, `onClick` with `onPress`, and so on. All styles are moved into `StyleSheet.create({})`, CSS properties unsupported in RN are translated or stubbed, icon references are replaced with placeholder comments, and the output is always a complete, self-contained component file ready to drop into an Expo project.
+### `expo-rn-rules`
+A single ruleset for all React Native Expo development. Covers component structure, StyleSheet-only styling, layout rules, HTML/CSS/Tailwind-to-RN conversion (element mapping, event mapping, unsupported CSS handling), and Expo Router file-based navigation for tabs, inner pages, and modals. Navigation rules are strict: no manual navigator composition, tabs are opt-in, inner pages are owned by their tab folder, and modals live in a dedicated `(modal)` group. Includes a combined pre-commit checklist and pre-code navigation checklist.
 
 ### `swift_best_practices`
 Provides a strict SwiftUI architecture prompt guide covering folder structure, state management, navigation, services, theme usage, and code style. Designed to keep new features consistent, scalable, and maintainable.
@@ -24,8 +24,6 @@ Provides a strict SwiftUI architecture prompt guide covering folder structure, s
 ### `HTML_to_swift`
 Guides full React Native or HTML/CSS-to-SwiftUI conversions with a strict multi-phase process: source reading, migration mapping, project structure, assets, color tokens, CSS translation rules, navigation patterns, and component/state management mappings.
 
-### `expo-router-navigation.rules`
-Defines a strict Expo Router navigation contract for tabs, inner pages, and modals so routes are placed correctly, do not appear unintentionally in bottom navigation, and avoid legacy React Navigation patterns.
 
 ### `swift_dev_menu`
 Defines how to build a reusable SwiftUI developer menu that is debug-only (`#if DEBUG`), sectioned for safe tooling actions, wired through environment objects (without business logic in the view), and includes proper state handling for dialogs, sheets, persistent toggles, and preview setup.
