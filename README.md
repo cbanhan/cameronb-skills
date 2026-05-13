@@ -21,6 +21,9 @@ A single ruleset for all React Native Expo development. Covers component structu
 ### `swift-rules`
 A single ruleset for all SwiftUI iOS development. Covers tiered architecture (Small/Medium/Large) with matching state patterns (`@EnvironmentObject` store, `@Observable` view models, or full DI), navigation via `NavigationStack` enum routing, Firebase and REST service patterns, theme tokens, model conventions, and code style. Also includes a full HTML/CSS/React Native → SwiftUI conversion guide (CSS translation tables, asset setup, color tokens, SF Symbol mapping, state mapping) and the `#if DEBUG` developer menu scaffold pattern. One file covers everything from starting a new project to converting a design.
 
+### `investigate`
+The first step in the pre-development workflow. Explores the codebase to fully understand the scope of a problem, then returns a structured high-level overview — covering what needs to change, the recommended approach, affected files, trade-offs, and open questions — without writing any code or producing a plan. Use this before `/create-plan` to align on the right solution first.
+
 ### `plan-review`
 Performs a senior-engineer pre-development plan review before any code is written. It reads the plan in full, cross-references every assumption against the actual codebase, and produces a structured findings table categorized by severity (CRITICAL, MAJOR, MINOR). Flags missing prerequisites, wrong assumptions, already-completed work, ambiguous instructions, missing guards, regression risks, and silent failure modes. Outputs a READY or NEEDS UPDATES status with a clear list of what the plan gets right.
 
