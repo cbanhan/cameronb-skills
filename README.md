@@ -29,3 +29,6 @@ Performs a senior-engineer pre-development plan review before any code is writte
 
 ### `create-plan`
 Generates a detailed, codebase-grounded implementation plan before any code is written. It reads all relevant files, maps dependencies and sequencing, and produces a `plan.md` file with a clear goal, scope, prerequisites, step-by-step instructions (each naming exact file paths and changes), validation steps, and risk notes. Designed to pair with `plan-review` — the plan is created first, then reviewed before implementation begins.
+
+### `ask`
+Puts the agent in read-only Ask Mode. No code changes are made — no edits, writes, file creation, deletions, or state-modifying shell commands. Use this to explore, explain, and discuss the codebase freely without risking any accidental implementation. The agent can read files, run read-only shell commands (`grep`, `find`, `git log`, etc.), explain architecture, and discuss tradeoffs. If asked to make a change, it responds "I cannot do that in Ask Mode" and waits for an explicit go-ahead before touching anything. Available system-wide across Claude and Codex via `/ask`.
